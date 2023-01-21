@@ -17,9 +17,9 @@ inputs:
   cdk_args:
     description: 'AWS CDK subcommand arguments.'
     required: false
-  cdk_directory:
-    description: 'Where your CDK project lives.'
-    default: '.'
+  cdk_yarn_workspace:
+    description: 'CDK yarn workspace name.'
+    default: 'cdk'
   actions_comment:
     description: 'Whether or not to comment on pull requests.'
     default: true
