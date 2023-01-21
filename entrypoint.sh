@@ -15,11 +15,6 @@ function installTypescript(){
 	npm install typescript
 }
 
-function installYarn(){
-	echo "Installing yarn"
-	npm i -g yarn
-}
-
 function installAwsCdk(){
 	echo "Installing aws-cdk ${INPUT_CDK_VERSION}"
 	if [ "${INPUT_CDK_VERSION}" == "latest" ]; then
@@ -68,11 +63,8 @@ function installPipRequirements(){
 
 function runCdk(){
 	set -o pipefail
-	echo "Installing dependencies"
-	yarn install
 	echo "Moving to directory: ${INPUT_CDK_DIRECTORY}"
 	cd ${INPUT_CDK_DIRECTORY} || exit
-	echo "Installing dependencies cdk ${INPUT_CDK_SUBCOMMAND} ${*} \"${INPUT_CDK_STACK}\""
 	echo "Running cdk ${INPUT_CDK_SUBCOMMAND} ${*} \"${INPUT_CDK_STACK}\""
 	cdk ${INPUT_CDK_SUBCOMMAND} ${*} "${INPUT_CDK_STACK}" 2>&1 | tee output.log
 	exitCode=${?}
@@ -110,7 +102,6 @@ ${output}
 function main(){
 	parseInputs
 	cd ${GITHUB_WORKSPACE} || exit
-	installYarn
 	installTypescript
 	installAwsCdk
 	installPipRequirements
