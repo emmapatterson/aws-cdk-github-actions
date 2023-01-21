@@ -63,6 +63,7 @@ function installPipRequirements(){
 
 function runCdk(){
 	set -o pipefail
+	yarn install --frozen-lockfile
 	echo "Moving to directory: ${INPUT_CDK_DIRECTORY}"
 	cd ${INPUT_CDK_DIRECTORY} || exit
 	echo "Running cdk ${INPUT_CDK_SUBCOMMAND} ${*} \"${INPUT_CDK_STACK}\""
