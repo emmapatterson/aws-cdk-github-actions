@@ -61,6 +61,7 @@ function installPipRequirements(){
 }
 
 function runCdk(){
+  cd ${INPUT_CDK_DIRECTORY} || exit
 	echo "Run cdk ${INPUT_CDK_SUBCOMMAND} ${*} \"${INPUT_CDK_STACK}\""
 	set -o pipefail
 	cdk ${INPUT_CDK_SUBCOMMAND} ${*} "${INPUT_CDK_STACK}" 2>&1 | tee output.log
@@ -87,7 +88,7 @@ ${output}
 
 </details>
 
-*Workflow: \`${GITHUB_WORKFLOW}\`, Action: \`${GITHUB_ACTION}\`, Working Directory: \`${INPUT_WORKING_DIR}\`*"
+*Workflow: \`${GITHUB_WORKFLOW}\`, Action: \`${GITHUB_ACTION}\`*"
 
 		payload=$(echo "${commentWrapper}" | jq -R --slurp '{body: .}')
 		commentsURL=$(cat ${GITHUB_EVENT_PATH} | jq -r .pull_request.comments_url)
@@ -98,7 +99,7 @@ ${output}
 
 function main(){
 	parseInputs
-	cd ${GITHUB_WORKSPACE}/${INPUT_WORKING_DIR}
+	cd ${GITHUB_WORKSPACE} || exit
 	installTypescript
 	installAwsCdk
 	installPipRequirements

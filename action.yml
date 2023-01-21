@@ -1,6 +1,6 @@
 name: 'AWS CDK GitHub Actions'
 description: 'Runs AWS-CDK via GitHub Actions.'
-author: 'youyo <1003ni2@gmail.com>'
+author: 'emma moinat <emma.moinat@instil.co>'
 branding:
   icon: 'terminal'
   color: 'yellow'
@@ -17,8 +17,8 @@ inputs:
   cdk_args:
     description: 'AWS CDK subcommand arguments.'
     required: false
-  working_dir:
-    description: 'AWS CDK working directory.'
+  cdk_directory:
+    description: 'Where your CDK project lives.'
     default: '.'
   actions_comment:
     description: 'Whether or not to comment on pull requests.'

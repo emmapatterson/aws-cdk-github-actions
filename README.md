@@ -20,9 +20,10 @@ jobs:
     steps:
 
       - name: cdk diff
-        uses: youyo/aws-cdk-github-actions@v2
+        uses: emmapatterson/aws-cdk-github-actions@v1.0.0
         with:
           cdk_subcommand: 'diff'
+          cdk_directory: 'cdk'
           actions_comment: true
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -30,11 +31,12 @@ jobs:
           AWS_DEFAULT_REGION: 'ap-northeast-1'
 
       - name: cdk deploy
-        uses: youyo/aws-cdk-github-actions@v2
+        uses: emmapatterson/aws-cdk-github-actions@v1.0.0
         with:
           cdk_subcommand: 'deploy'
           cdk_stack: 'stack1'
           cdk_args: '--require-approval never'
+          cdk_directory: 'cdk'
           actions_comment: false
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -42,45 +44,15 @@ jobs:
           AWS_DEFAULT_REGION: 'ap-northeast-1'
 
       - name: cdk synth
-        uses: youyo/aws-cdk-github-actions@v2
+        uses: emmapatterson/aws-cdk-github-actions@v1.0.0
         with:
           cdk_subcommand: 'synth'
           cdk_version: '1.16.2'
-          working_dir: 'src'
+          cdk_directory: 'cdk'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: 'ap-northeast-1'
-```
-
-### Can I use assume-role?
-
-If you use assume-role, we recommend using [awscredswrap](https://github.com/marketplace/actions/aws-assume-role-github-actions).
-
-See: https://github.com/marketplace/actions/aws-assume-role-github-actions#use-as-github-actions
-
-```yaml
-on: [push]
-
-jobs:
-  aws_cdk:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Assume Role
-        uses: youyo/awscredswrap@master
-        with:
-          role_arn: ${{ secrets.ROLE_ARN }}
-          duration_seconds: 3600
-          role_session_name: 'awscredswrap@GitHubActions'
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: 'ap-northeast-1'
-
-      - name: cdk diff
-        uses: youyo/aws-cdk-github-actions@v2
-        with:
-          cdk_subcommand: 'diff'
 ```
 
 ## Inputs
@@ -88,7 +60,7 @@ jobs:
 - `cdk_subcommand` **Required** AWS CDK subcommand to execute ('deploy', 'diff', etc.)
 - `cdk_version` AWS CDK version to install. (default: 'latest')
 - `cdk_stack` AWS CDK stack name to execute. (default: '*')
-- `working_dir` AWS CDK working directory. (default: '.')
+- `cdk_directory` Where your CDK project lives. (default: '.')
 - `actions_comment` Whether or not to comment on pull requests. (default: true)
 - `debug_log` Enable debug-log. (default: false)
 
